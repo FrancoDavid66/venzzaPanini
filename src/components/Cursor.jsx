@@ -4,8 +4,12 @@ import { usePreferencias } from '../context/preferencias';
 
 /**
  * Cursor propio (solo en compu con mouse).
+ * - Invierte el color de lo que tiene abajo: se ve oscuro sobre fondos claros y claro sobre fondos oscuros.
  * - Sobre links y botones se agranda.
  * - Sobre elementos con data-cursor="pedir" o data-cursor="ver" muestra la etiqueta.
+ *
+ * Importante: el mix-blend-difference va en el contenedor "fixed" de afuera.
+ * Si va en el elemento de adentro, se mezcla solo con su contenedor y queda siempre blanco.
  */
 export default function Cursor() {
   const { t } = usePreferencias();
@@ -56,15 +60,19 @@ export default function Cursor() {
   if (!activo) return null;
 
   const etiqueta = modo === 'pedir' ? t.cursor.pedir : modo === 'ver' ? t.cursor.ver : null;
-  const tamano = etiqueta ? 84 : modo === 'hover' ? 54 : modo === 'texto' ? 10 : 34;
+  const tamano = etiqueta ? 84 : modo === 'hover' ? 56 : modo === 'texto' ? 12 : 36;
 
   return (
     <>
       {/* Anillo (sigue al mouse con un poquito de inercia) */}
-      <motion.div aria-hidden="true" className="pointer-events-none fixed left-0 top-0 z-[200]" style={{ x: xSuave, y: ySuave }}>
+      <motion.div
+        aria-hidden="true"
+        className={`pointer-events-none fixed left-0 top-0 z-[200] ${etiqueta ? '' : 'mix-blend-difference'}`}
+        style={{ x: xSuave, y: ySuave }}
+      >
         <motion.div
           className={`flex items-center justify-center rounded-full ${
-            etiqueta ? 'bg-aperol text-crema shadow-tarjeta' : 'border-[1.5px] border-white mix-blend-difference'
+            etiqueta ? 'bg-aperol text-crema shadow-tarjeta' : 'border-2 border-white'
           }`}
           style={{ translateX: '-50%', translateY: '-50%' }}
           animate={{ width: tamano, height: tamano, opacity: visible ? 1 : 0 }}
@@ -88,11 +96,15 @@ export default function Cursor() {
       </motion.div>
 
       {/* Punto (va exacto con el mouse) */}
-      <motion.div aria-hidden="true" className="pointer-events-none fixed left-0 top-0 z-[201]" style={{ x, y }}>
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-[201] mix-blend-difference"
+        style={{ x, y }}
+      >
         <motion.div
-          className="rounded-full bg-white mix-blend-difference"
+          className="rounded-full bg-white"
           style={{ translateX: '-50%', translateY: '-50%' }}
-          animate={{ width: etiqueta ? 0 : 6, height: etiqueta ? 0 : 6, opacity: visible ? 1 : 0 }}
+          animate={{ width: etiqueta ? 0 : 8, height: etiqueta ? 0 : 8, opacity: visible ? 1 : 0 }}
           transition={{ duration: 0.15 }}
         />
       </motion.div>
