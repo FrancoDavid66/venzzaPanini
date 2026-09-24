@@ -1,0 +1,193 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   TEMA — Modo Día (crema) / Modo Noche (verde del local)
+   Formato "R G B" para poder usar opacidades: bg-fondo/80
+   ============================================================ */
+@layer base {
+  :root {
+    --fondo: 246 240 228;    /* #F6F0E4 */
+    --fondo-2: 239 230 213;  /* #EFE6D5 */
+    --fondo-3: 228 215 192;  /* #E4D7C0 */
+    --tarjeta: 246 240 228;  /* #F6F0E4 */
+    --tinta: 42 33 27;       /* #2A211B */
+    --tinta-2: 91 77 67;     /* #5B4D43 */
+    --tinta-3: 138 123 110;  /* #8A7B6E */
+    --marca: 92 108 91;      /* #5C6C5B */
+    --acento: 180 83 46;     /* #B4532E */
+    color-scheme: light;
+  }
+
+  :root.noche {
+    --fondo: 27 36 29;       /* #1B241D */
+    --fondo-2: 33 43 35;     /* #212B23 */
+    --fondo-3: 46 58 48;     /* #2E3A30 */
+    --tarjeta: 36 46 38;     /* #242E26 */
+    --tinta: 243 236 223;    /* #F3ECDF */
+    --tinta-2: 200 192 177;  /* #C8C0B1 */
+    --tinta-3: 154 146 132;  /* #9A9284 */
+    --marca: 167 181 162;    /* #A7B5A2 */
+    --acento: 236 122 74;    /* #EC7A4A */
+    color-scheme: dark;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-fondo text-tinta font-sans antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif;
+    font-optical-sizing: auto;
+    letter-spacing: -0.02em;
+  }
+
+  ::selection {
+    background: rgba(236, 91, 36, 0.28);
+    color: inherit;
+  }
+
+  :focus-visible {
+    outline: 2px solid rgb(var(--acento));
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+/* ============================================================
+   TRANSICIÓN DÍA / NOCHE (círculo que se expande desde el botón)
+   ============================================================ */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ============================================================
+   SCROLL SUAVE (Lenis) y CURSOR PROPIO
+   ============================================================ */
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-smooth iframe {
+  pointer-events: auto; /* el mapa sigue siendo usable */
+}
+.lenis.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+html.cursor-propio,
+html.cursor-propio * {
+  cursor: none !important;
+}
+
+/* ============================================================
+   COMPONENTES REUTILIZABLES
+   ============================================================ */
+@layer components {
+  /* Grano de papel (textura sutil) */
+  .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.16;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.13 0 0 0 0 0.1 0 0 0 0.6 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Grano claro para fondos oscuros (y para todo el sitio en modo noche) */
+  .grain-claro,
+  .noche .grain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.96 0 0 0 0 0.94 0 0 0 0 0.89 0 0 0 0.7 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .noche .grain {
+    opacity: 0.05;
+  }
+
+  /* Arcos italianos: tope en medio punto según la proporción de la foto */
+  .arch-45 { border-radius: 50% 50% 1.25rem 1.25rem / 40% 40% 1.25rem 1.25rem; }
+  .arch-34 { border-radius: 50% 50% 1.25rem 1.25rem / 37.5% 37.5% 1.25rem 1.25rem; }
+  .arch-916 { border-radius: 50% 50% 1.25rem 1.25rem / 28.125% 28.125% 1.25rem 1.25rem; }
+
+  /* Tricolor de la marca (salvia · crema · terracota) */
+  .tricolore {
+    background: linear-gradient(90deg, #5C6C5B 0 33.33%, #F6F0E4 33.33% 66.66%, #B4532E 66.66% 100%);
+    box-shadow: inset 0 0 0 1px rgba(42, 33, 27, 0.08);
+  }
+
+  .tricolore-v {
+    background: linear-gradient(180deg, #5C6C5B 0 33.33%, #F6F0E4 33.33% 66.66%, #B4532E 66.66% 100%);
+    box-shadow: inset 0 0 0 1px rgba(42, 33, 27, 0.08);
+  }
+
+  /* Etiqueta chica arriba de cada título */
+  .eyebrow {
+    @apply inline-flex items-center gap-3 text-[12px] font-semibold uppercase tracking-[0.28em] text-marca;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply tricolore h-[5px] w-9 rounded-full;
+  }
+
+  /* Palabra destacada en itálica dentro de los títulos */
+  .enfasis {
+    @apply italic text-acento;
+  }
+
+  /* Botones */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-[15px] font-semibold transition-all duration-300 ease-suave;
+  }
+  .btn-primario {
+    @apply btn bg-terracota text-crema shadow-tarjeta hover:bg-terracota-2 hover:-translate-y-0.5;
+  }
+  .btn-secundario {
+    @apply btn border border-tinta/20 text-tinta hover:border-tinta/50 hover:bg-fondo-2;
+  }
+  .btn-verde {
+    @apply btn bg-bosco text-crema hover:bg-bosco-2 hover:-translate-y-0.5;
+  }
+  .noche .btn-verde {
+    @apply bg-crema text-bosco hover:bg-white;
+  }
+  .btn-claro {
+    @apply btn bg-crema text-bosco hover:bg-white hover:-translate-y-0.5;
+  }
+
+  /* Mapa en modo noche (se oscurece para acompañar) */
+  .noche .mapa-noche {
+    filter: invert(0.9) hue-rotate(180deg) saturate(0.6) brightness(0.95) contrast(0.9);
+  }
+
+  /* Texto con contorno (decorativo) */
+  .texto-contorno {
+    color: transparent;
+    -webkit-text-stroke: 1.5px currentColor;
+  }
+}
+
+/* ============================================================
+   ACCESIBILIDAD — respetar "reducir movimiento"
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

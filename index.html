@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#F6F0E4" />
+
+    <!-- Modo Día / Noche: se aplica antes de pintar la página (evita el parpadeo).
+         Noche de 18 a 7 hs (hora de Buenos Aires) → mantener igual que modoNoche en src/data/negocio.js -->
+    <script>
+      (function () {
+        try {
+          var tema = sessionStorage.getItem('venzza-tema');
+          if (!tema) {
+            var hora = Number(
+              new Intl.DateTimeFormat('en-US', {
+                timeZone: 'America/Argentina/Buenos_Aires',
+                hour: 'numeric',
+                hourCycle: 'h23',
+              }).format(new Date())
+            ) % 24;
+            tema = hora >= 18 || hora < 7 ? 'noche' : 'dia';
+          }
+          if (tema === 'noche') {
+            document.documentElement.classList.add('noche');
+            document.documentElement.style.colorScheme = 'dark';
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', '#1B241D');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- ⚠️ Cambiar el dominio cuando esté el definitivo -->
+    <link rel="canonical" href="https://venzza-panini.vercel.app/" />
+
+    <title>Venzza Panini &amp; Caffè | Panini al estilo italiano en Congreso, CABA</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Panini al estilo italiano con ingredientes frescos, café y aperitivo en Av. Rivadavia 1589, Congreso (CABA). Happy hour 2x1 en Aperol de 18 a 21 hs."
+    />
+    <meta
+      name="keywords"
+      content="panini, panini italiano, sándwich italiano, café, aperitivo, Aperol, happy hour, Congreso, CABA, Buenos Aires, Venzza"
+    />
+    <meta name="author" content="Venzza Panini & Caffè" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph (WhatsApp, Instagram, Facebook) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Venzza Panini & Caffè" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:url" content="https://venzza-panini.vercel.app/" />
+    <meta property="og:title" content="Venzza Panini & Caffè · Congreso, CABA" />
+    <meta property="og:description" content="No son solo panini, son obras de arte. Panini al estilo italiano, café y aperitivo a metros del Gaumont." />
+    <meta property="og:image" content="https://venzza-panini.vercel.app/og-venzza.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Panini Firenze de Venzza servido en el local" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Venzza Panini & Caffè · Congreso, CABA" />
+    <meta name="twitter:description" content="Panini al estilo italiano, café y aperitivo a metros del Gaumont." />
+    <meta name="twitter:image" content="https://venzza-panini.vercel.app/og-venzza.jpg" />
+
+    <!-- Datos estructurados para Google (negocio local) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Restaurant",
+        "name": "Venzza Panini & Caffè",
+        "description": "Panini al estilo italiano con ingredientes frescos, café y aperitivo.",
+        "url": "https://venzza-panini.vercel.app/",
+        "image": "https://venzza-panini.vercel.app/og-venzza.jpg",
+        "logo": "https://venzza-panini.vercel.app/icon-512.png",
+        "telephone": "+54 9 11 4089-6831",
+        "servesCuisine": ["Italiana", "Panini", "Café"],
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Av. Rivadavia 1589",
+          "addressLocality": "Ciudad Autónoma de Buenos Aires",
+          "addressRegion": "CABA",
+          "addressCountry": "AR"
+        },
+        "sameAs": ["https://www.instagram.com/venzza.panini/"]
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>
+      <p style="padding:24px;font-family:sans-serif">
+        Venzza Panini &amp; Caffè · Av. Rivadavia 1589, CABA · WhatsApp +54 9 11 4089-6831
+      </p>
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

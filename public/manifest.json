@@ -1,0 +1,13 @@
+{
+  "name": "Venzza Panini & Caffè",
+  "short_name": "Venzza",
+  "description": "Panini al estilo italiano, café y aperitivo en Congreso, CABA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F6F0E4",
+  "theme_color": "#5C6C5B",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
